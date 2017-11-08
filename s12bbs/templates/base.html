@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)http://v3.bootcss.com/examples/navbar-static-top/ -->
+<html lang="en">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+
+    <title>Static Top Navbar Example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bootstrap/css/navbar-static-top.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/custom.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <script src="/static/bootstrap/js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>{% csrf_token %}
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://v3.bootcss.com/examples/navbar-static-top/#">草榴社区</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          {% block top-head %}
+          <ul class="nav navbar-nav">
+            {% for category in category_list %}
+              {% if category.id == category_obj.id %}
+                <li class="active"><a href="{% url 'category_detail'  category.id  %}">{{ category.name }}</a></li>
+              {% else %}
+                <li class=""><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+              {% endif %}
+            {% endfor %}
+            <li class="webchat"><a href="{% url 'chat_dashboard' %}">WEB聊天室</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+
+              <li><a href="#">{{request.user.userprofile.name}}</a></li>
+
+              <li><a href="{% url 'logout' %}">logout</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}">登录/注册</a></li>
+            {% endif %}
+            <li class=""><a href="{% url 'new-article' %}">发贴</a></li>
+          </ul>
+        {% endblock %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+    <div class="page-container">
+      {% block page-container %}
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+          <h2>your owner stuff</h2>
+        </div>
+      {% endblock %}
+    </div> <!-- /container -->
+    <footer class="footer">
+      sssss
+    </footer>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/bootstrap/js/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    {% block bottom-js %}
+
+    {% endblock %}
+
+</body></html>

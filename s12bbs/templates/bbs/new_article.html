@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block page-container %}
+    <div class="wrap-left">
+        <form method="post" enctype="multipart/form-data" > {% csrf_token %}
+            {{ article_form }}
+            <!--<textarea name="article-content"></textarea>-->
+            <input type="submit" class="btn btn-success pull-right" style="" value="发帖"/>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="{% url 'file-upload' %}"> {% csrf_token %}
+            <input name='filename' type="file">
+            <input type="submit" value="上传文件">
+        </form>
+    </div>
+    <div class="wrap-right">
+        sss
+    </div>
+    <div class="clear-both"></div>
+{% endblock %}
+
+{% block bottom-js %}
+<script src="/static/plugins/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+    CKEDITOR.replace('id_content')
+</script>
+{% endblock %}

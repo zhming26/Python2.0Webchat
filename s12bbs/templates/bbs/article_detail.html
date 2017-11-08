@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% load custom_tags %}
+
+{% block page-container %}
+    <div class="wrap-left">
+        <div class="article-title-bg">
+            {{article_obj.title}}
+        </div>
+        <div class="article-title-brief">
+            <span>作者:{{article_obj.author.name}}</span>
+            <span>{{article_obj.pub_date}}</span>
+            <span>{% filter_comment article_obj as comments %}</span>
+            <span class="glyphicon glyphicon-comment">{{comments.comment_count}}</span>
+            <span class="glyphicon glyphicon-thumbs-up">{{comments.thumb_count}}</span>
+        </div>
+        <div class="article-content">
+            <img class="article-detail-img" src="/static/{{article_obj.head_img|truncate_url}}" >
+            {{ article_obj.content|safe}}
+            <span class="glyphicon glyphicon-comment add-comment "></span>
+        </div>
+
+        <div class="comment-box">
+            {% if request.user.is_authenticated %}
+                <div class="new-comment-box">
+                    <textarea class="form-control" rows="3"></textarea>
+                    <button type="button" style="margin-top: 5px;margin-bottom: 5px;" class="btn btn-success pull-right">评论</button>
+                </div>
+            {% else %}
+                <div class="new-comment-box">
+                    <div class="jumbotron">
+                      <p style="text-align:center;"><a href="{% url 'login' %}?next={{ request.path }}" style="color: blue">登录</a>后参与评论</p>
+                    </div>
+                </div>
+            {% endif %}
+            <button type="button" onclick="GetComments()">测试获取评论</button>
+            <div class="comment-list" style="margin-left: 10px">
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="wrap-right">
+        sss
+    </div>
+    <div class="clear-both"></div>
+
+{% endblock %}
+
+
+
+
+{% block bottom-js %}
+<script>
+    function GetComments(){
+        $.get("{% url 'get_comments' article_obj.id %}",function(callback){
+            //console.log(callback);
+            $(".comment-list").html(callback);
+            /*
+            // start add comment 绑定click事件
+            $(".add-comment").click(function(){
+                var comment_id = $(this).parent().attr('comment-id');
+                console.log(comment_id)
+            });
+            // end add comment
+            */
+        });
+    }
+    function getCsrf(){
+        return $("input[name='csrfmiddlewaretoken']").val();
+    }
+    $(document).ready(function(){
+        GetComments();
+        $(".wrap-left").delegate(" .add-comment ",'click',function(){
+            var comment_id = $(this).parent().attr('comment-id');
+            $('.new-comment-box textarea').val(''); //在克隆之前把评论输入框的内容清空.
+            var new_comment_box_div = $('.new-comment-box').clone(true);
+            $('.new-comment-box').remove();
+            $(this).parent().append(new_comment_box_div);
+        });
+
+        $(".new-comment-box .btn").click(function(){
+            var comment_text = $(".new-comment-box textarea").val();
+            if (comment_text.trim().length < 5){
+                alert("评论不能少于5个字sb")
+            }else{
+                //post
+                if ($(this).parent().parent().attr('comment-id')){
+//                if ($('.new-comment-box').parent().attr('comment-id')){
+                    var parent_comment_id =  $('.new-comment-box').parent().attr('comment-id');
+                } else{
+                    var parent_comment_id = null;
+                }
+
+                $.post("{% url 'post_comment' %}",
+                        {
+                            'comment_type':1,
+                            'article_id':"{{ article_obj.id }}",
+                            parent_commet_id:parent_comment_id,
+                            'comment':comment_text.trim(),
+                            'csrfmiddlewaretoken':getCsrf()
+                        },//end post args
+                        function(callback){
+                            //console.log(callback)
+                            if (callback == 'post-comment-success'){
+                                alert('successful');
+                                $('.new-comment-box textarea').val('');
+                                $('.new-comment-box').prependTo($('.comment-box'));
+                                GetComments();//新评论提交后,重新加载评论内容到页面.
+                            }
+                });//end post
+            }
+        });//end button click
+
+    });
+
+</script>
+
+{% endblock %}

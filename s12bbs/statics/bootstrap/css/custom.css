@@ -1,0 +1,130 @@
+.page-container{
+    border :1px solid green;
+    padding-left: 150px;
+    padding-right: 150px ;
+}
+
+.wrap-left{
+    width: 75%;
+    /*background-color: #dca7a7;*/
+    float: left;
+}
+
+.wrap-right{
+    width: 25%;
+    background-color: #5bc0de;
+    float: right;
+}
+.clear-both{
+    clear:both;
+}
+.footer{
+    margin-top: 50px;
+    height:200px;
+    background-color: #3c3c3c;
+}
+
+.atricle-head-img img{
+    height: 125px;
+    width: 220px;
+}
+
+.article-box{
+    border: 2px solid #b2dba1;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+body{
+    color: #333;
+    font-family: Arial,"微软雅黑","Microsoft yahei","Hiragino Sans GB","冬青黑体简体中文 w3","Microsoft Yahei","Hiragino Sans GB","冬青黑体简体中文 w3",STXihei,"华文细黑",SimSun,"宋体",Heiti,"黑体",sans-serif;
+}
+a{
+    color: #333;
+}
+a:hover{
+    color: #337;
+    text-decoration: none;
+}
+a:visited{
+    color: #333;
+    text-decoration: none;
+}
+
+.article-title-bg{
+    font-size: 30px;
+    /*padding-top: 10px;*/
+    margin-top: 10px;
+}
+
+.article-title-brief{
+    color: #999;
+    margin-top: 10px;
+}
+
+.article-detail-img {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.article-content{
+    line-height: 30px;
+}
+
+.comment-node{
+    border: 1px solid darkgray;
+    padding: 5px;
+}
+
+.root-comment{
+    border: 2px solid darkblue;
+    padding: 5px;
+}
+/*for webchat*/
+.chat-container{
+    width: 100%;
+    height: 100%;
+    border: 1px dashed darkgray;
+}
+.left-contact-panel{
+    width: 200px;
+    height: 604px;
+    border:2px solid darkblue;
+    float: left;
+}
+
+.right-chat-panel{
+    width: 750px;
+    height: 100%;
+    border:2px solid darkblue;
+    float: left;
+}
+
+.chat-box-title{
+    height: 50px;
+    border: 1px solid darkgray;
+}
+
+.chat-box-window{
+    height: 400px;
+    border: 1px solid brown;
+    overflow: auto;
+}
+
+.chat-box-emoj{
+    height: 30px;
+    border: 1px solid bisque;
+}
+
+.chat-box-msg-box{
+    height: 120px;
+    border: 1px solid brown;
+}
+
+.chat-box-msg-box textarea{
+    height: 100%;
+    width: 85%;
+}
+.chat-box-msg-box button{
+    margin-bottom: 80px;
+}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load custom_tags %}
+
+{% block page-container %}
+    <div class="wrap-left">
+        <div class="new_article_notify hide">
+            你有<span></span>新消息
+        </div>
+        {% for article in article_list reversed %}
+            <div article_id="{{article.id}}" class="article-box row">
+                <div class="atricle-head-img col-md-5">
+                    <img src="/static/{{ article.head_img | truncate_url }}"/>
+                </div>
+                <div class="col-md-7">
+                    <div class="article-title">
+                        <a href="{% url 'article_detail' article.id %} ">{{article.title}}</a>
+                    </div>
+                    <div class="article-brief">
+                        {{article.brief}}
+                    </div>
+                    <div class="article-brief-info">
+                        <span>{{article.author.name}}</span>
+                        <span>{{article.pub_date}}</span>
+                        <span>{% filter_comment article as comments %}</span>
+                        <span class="glyphicon glyphicon-comment">{{comments.comment_count}}</span>
+                        <span class="glyphicon glyphicon-thumbs-up">{{comments.thumb_count}}</span>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+    <div class="wrap-right">
+        sss
+    </div>
+    <div class="clear-both"></div>
+
+{% endblock %}
+
+{% block bottom-js %}
+<!--//首先要等文档数加载完成后在执行定时任务-->
+<script>
+    $(document).ready(function(){
+       var new_article_refresh = setInterval(function(){
+//           var latest_article_id = $(".wrap-left").children(':first').attr("article_id");
+           var latest_article_id = $($(".wrap-left").children()[1]).attr("article_id");
+           $.getJSON("{% url 'get_latest_article_count' %}",
+                   {"latest_id":latest_article_id},
+                   function(callback){
+//                       console.log(callback);
+                       if(callback.new_article_count >0){
+                           console.log('1111')
+                           if($(".new_article_notify").hasClass("hide")){
+                               $(".new_article_notify").removeClass("hide")
+                               console.log('22222')
+                           }
+                           $(".new_article_notify span").html(callback.new_article_count)
+                       }
+                   }
+           );
+           console.log(latest_article_id);
+       },3000);
+    });
+</script>
+{% endblock %}
